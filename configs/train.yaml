@@ -27,3 +27,5 @@ target_modules:
   - o_proj
 seed: 42
 gradient_checkpointing: true
+group_by_length: true
+dataloader_num_workers: 4

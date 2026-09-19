@@ -147,6 +147,10 @@ def main() -> None:
         remove_unused_columns=False,
         seed=int(config["seed"]),
         max_steps=args.max_steps,
+        group_by_length=bool(config.get("group_by_length", False)),
+        dataloader_num_workers=int(config.get("dataloader_num_workers", 0)),
+        dataloader_pin_memory=True,
+        tf32=True,
     )
     trainer = Trainer(
         model=model,
