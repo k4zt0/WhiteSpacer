@@ -52,9 +52,10 @@ def main() -> None:
         torch_dtype=torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16,
         device_map="auto",
     )
+    model.config.use_cache = False
     results = []
     for case_id, prompt, terms, any_term in CASES:
-        inputs = tokenizer.apply_chat_template(
+        rendered = tokenizer.apply_chat_template(
             [
                 {
                     "role": "system",
@@ -62,17 +63,26 @@ def main() -> None:
                 },
                 {"role": "user", "content": prompt},
             ],
+            tokenize=False,
             add_generation_prompt=True,
+        )
+        inputs = tokenizer(
+            rendered,
+            add_special_tokens=False,
             return_tensors="pt",
         ).to(model.device)
         output = model.generate(
-            inputs,
+            **inputs,
             max_new_tokens=384,
             do_sample=False,
             pad_token_id=tokenizer.eos_token_id,
             eos_token_id=tokenizer.eos_token_id,
+            use_cache=False,
         )
-        response = tokenizer.decode(output[0, inputs.shape[1] :], skip_special_tokens=True)
+        response = tokenizer.decode(
+            output[0, inputs["input_ids"].shape[1] :],
+            skip_special_tokens=True,
+        )
         checks = [term in response.lower() for term in terms]
         results.append(
             {
