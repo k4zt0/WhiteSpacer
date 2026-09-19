@@ -4,7 +4,7 @@ base_runtime: Edge0/Edge0-8B-A1B-preview
 dataset_path: data/processed/train.jsonl
 eval_dataset_path: data/processed/validation.jsonl
 output_dir: outputs/WhiteSpacer
-max_seq_length: 2048
+max_seq_length: 1024
 learning_rate: 0.0002
 num_train_epochs: 1
 per_device_train_batch_size: 8
