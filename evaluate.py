@@ -71,6 +71,7 @@ def main() -> None:
             add_special_tokens=False,
             return_tensors="pt",
         ).to(model.device)
+        inputs.pop("token_type_ids", None)
         output = model.generate(
             **inputs,
             max_new_tokens=384,
