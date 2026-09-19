@@ -70,6 +70,7 @@ def main() -> None:
             max_new_tokens=384,
             do_sample=False,
             pad_token_id=tokenizer.eos_token_id,
+            eos_token_id=tokenizer.eos_token_id,
         )
         response = tokenizer.decode(output[0, inputs.shape[1] :], skip_special_tokens=True)
         checks = [term in response.lower() for term in terms]
@@ -95,4 +96,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -45,7 +45,9 @@ python evaluate.py --model outputs/WhiteSpacer
 
 The default trains attention projections only, avoiding a prohibitively large
 adapter across all 128 MoE experts. It uses 4-bit NF4 QLoRA, gradient
-checkpointing, assistant-only loss, and BF16 when supported.
+checkpointing, assistant-only loss, and BF16 when supported. The FP base
+tokenizer has no chat template, so training intentionally uses the compatible
+Edge0 tokenizer and chat template.
 
 ## Publish
 

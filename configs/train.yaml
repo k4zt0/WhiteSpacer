@@ -1,4 +1,5 @@
 model_name: inclusionAI/Ling-3.0-tiny-base
+tokenizer_name: Edge0/Edge0-8B-A1B-preview
 base_runtime: Edge0/Edge0-8B-A1B-preview
 dataset_path: data/processed/train.jsonl
 eval_dataset_path: data/processed/validation.jsonl
@@ -26,4 +27,3 @@ target_modules:
   - o_proj
 seed: 42
 gradient_checkpointing: true
-

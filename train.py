@@ -43,7 +43,9 @@ def main() -> None:
 
     dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
     tokenizer = AutoTokenizer.from_pretrained(
-        config["model_name"], trust_remote_code=True, use_fast=True
+        config.get("tokenizer_name", config["model_name"]),
+        trust_remote_code=True,
+        use_fast=True,
     )
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
@@ -62,6 +64,8 @@ def main() -> None:
         ),
     )
     model.config.use_cache = False
+    model.config.eos_token_id = tokenizer.eos_token_id
+    model.config.pad_token_id = tokenizer.pad_token_id
     model = prepare_model_for_kbit_training(
         model,
         use_gradient_checkpointing=bool(config["gradient_checkpointing"]),
@@ -96,7 +100,12 @@ def main() -> None:
         full = tokenizer.apply_chat_template(
             messages, tokenize=False, add_generation_prompt=False
         )
-        encoded = tokenizer(full, truncation=True, max_length=max_length)
+        encoded = tokenizer(
+            full,
+            truncation=True,
+            max_length=max_length,
+            add_special_tokens=False,
+        )
         prompt_ids = tokenizer(
             prompt, truncation=True, max_length=max_length, add_special_tokens=False
         )["input_ids"]
@@ -152,4 +161,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
