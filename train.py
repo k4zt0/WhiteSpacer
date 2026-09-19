@@ -35,6 +35,8 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, default=Path("configs/train.yaml"))
     parser.add_argument("--resume-from-checkpoint")
+    parser.add_argument("--max-steps", type=int, default=-1)
+    parser.add_argument("--output-dir")
     args = parser.parse_args()
     config = load_config(args.config)
     set_seed(int(config["seed"]))
@@ -123,7 +125,7 @@ def main() -> None:
     )
     has_eval = "validation" in tokenized
     training_args = TrainingArguments(
-        output_dir=config["output_dir"],
+        output_dir=args.output_dir or config["output_dir"],
         learning_rate=float(config["learning_rate"]),
         num_train_epochs=float(config["num_train_epochs"]),
         per_device_train_batch_size=int(config["per_device_train_batch_size"]),
@@ -144,6 +146,7 @@ def main() -> None:
         report_to="none",
         remove_unused_columns=False,
         seed=int(config["seed"]),
+        max_steps=args.max_steps,
     )
     trainer = Trainer(
         model=model,
@@ -155,8 +158,9 @@ def main() -> None:
         ),
     )
     trainer.train(resume_from_checkpoint=args.resume_from_checkpoint)
-    trainer.save_model(config["output_dir"])
-    tokenizer.save_pretrained(config["output_dir"])
+    output_dir = args.output_dir or config["output_dir"]
+    trainer.save_model(output_dir)
+    tokenizer.save_pretrained(output_dir)
 
 
 if __name__ == "__main__":
