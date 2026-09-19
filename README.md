@@ -49,6 +49,14 @@ checkpointing, assistant-only loss, and BF16 when supported. The FP base
 tokenizer has no chat template, so training intentionally uses the compatible
 Edge0 tokenizer and chat template.
 
+On an H100 80GB, use the throughput-oriented profile after a one-step smoke
+test:
+
+```bash
+python train.py --config configs/train_h100.yaml --max-steps 1 --output-dir outputs/smoke
+python train.py --config configs/train_h100.yaml
+```
+
 ## Publish
 
 Copy the final model card into the adapter directory, fill in measured training
