@@ -8,8 +8,9 @@ response, and explicitly authorized red/blue/purple-team work.
 
 The Edge0 preview is an MLX-specific int4 checkpoint with a bundled
 quantization-recovery LoRA and prerouter, not a conventional trainable
-Transformers checkpoint. Training therefore runs QLoRA against its MIT-licensed
-FP base, `inclusionAI/Ling-3.0-tiny-base`; the resulting PEFT adapter is
+Transformers checkpoint. Training therefore runs QLoRA against the
+MIT-licensed post-trained FP model from the same family,
+`inclusionAI/Ling-3.0-tiny`; the resulting PEFT adapter is
 published separately and does not overwrite Edge0's recovery adapter.
 
 ## Data sources
@@ -38,9 +39,10 @@ python -m pip install -r requirements.txt
 
 # Set NVD_API_KEY to speed up NVD collection. Use --nvd-limit 0 for all CVEs.
 python scripts/prepare_security_corpus.py --nvd-limit 50000
+python scripts/build_balanced_corpus.py
 accelerate config default
-accelerate launch train.py --config configs/train.yaml
-python evaluate.py --model outputs/WhiteSpacer
+accelerate launch train.py --config configs/train_h100_quality.yaml
+python evaluate.py --model outputs/WhiteSpacer-quality
 ```
 
 The default trains attention projections only, avoiding a prohibitively large
@@ -48,6 +50,11 @@ adapter across all 128 MoE experts. It uses 4-bit NF4 QLoRA, gradient
 checkpointing, assistant-only loss, and BF16 when supported. The FP base
 tokenizer has no chat template, so training intentionally uses the compatible
 Edge0 tokenizer and chat template.
+
+The full provenance corpus is retained, while the quality profile limits the
+highly repetitive NVD source to 8,000 examples, retains every other source,
+and oversamples the small behavior-boundary set. This prevents one templated
+source from overwhelming instruction-following behavior.
 
 On an H100 80GB, use the throughput-oriented profile after a one-step smoke
 test:

@@ -2,7 +2,7 @@
 license: apache-2.0
 library_name: peft
 pipeline_tag: text-generation
-base_model: inclusionAI/Ling-3.0-tiny-base
+base_model: inclusionAI/Ling-3.0-tiny
 tags:
   - cybersecurity
   - defensive-security
@@ -15,14 +15,15 @@ tags:
 
 # WhiteSpacer
 
-WhiteSpacer is a cybersecurity-focused PEFT adapter trained from the FP base
-model underlying `Edge0/Edge0-8B-A1B-preview`. It targets vulnerability
+WhiteSpacer is a cybersecurity-focused PEFT adapter trained from the
+post-trained FP model corresponding to the model family used by
+`Edge0/Edge0-8B-A1B-preview`. It targets vulnerability
 analysis, detection engineering, incident response, malware analysis, threat
 modeling, purple teaming, and explicitly authorized penetration testing.
 
 The Edge0 preview checkpoint is an MLX-specific int4 inference artifact with
 its own quantization-recovery LoRA and prerouter. This release therefore uses
-`inclusionAI/Ling-3.0-tiny-base` for CUDA QLoRA training and records
+`inclusionAI/Ling-3.0-tiny` for CUDA QLoRA training and records
 `Edge0/Edge0-8B-A1B-preview` as its runtime lineage. The PEFT adapter is not a
 drop-in replacement for Edge0's bundled recovery adapter.
 
@@ -50,4 +51,3 @@ payloads are explicitly excluded.
 Exact corpus counts, hardware, duration, hyperparameters, and evaluation
 results must be added after training. A model must not be released until the
 checked-in evaluation gate passes.
-

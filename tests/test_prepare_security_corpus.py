@@ -1,6 +1,7 @@
 import json
 
 from scripts.prepare_security_corpus import Example, safety_examples, write_splits
+from scripts.build_balanced_corpus import read_rows, write_rows
 
 
 def test_example_has_provenance_and_chat_shape():
@@ -26,3 +27,9 @@ def test_safety_examples_redirect_harmful_requests():
     assert len(examples) >= 5
     assert all("authorized" in example.assistant for example in examples)
 
+
+def test_balanced_helpers_round_trip_jsonl(tmp_path):
+    path = tmp_path / "rows.jsonl"
+    rows = [{"source": "test", "messages": []}]
+    write_rows(path, rows)
+    assert read_rows([path]) == rows
