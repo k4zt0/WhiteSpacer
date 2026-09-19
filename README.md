@@ -6,6 +6,8 @@ the model family used by
 It is designed for defensive security, safe malware analysis, incident
 response, and explicitly authorized red/blue/purple-team work.
 
+**Released adapter:** [KaztoRay/WhiteSpacer](https://huggingface.co/KaztoRay/WhiteSpacer)
+
 The Edge0 preview is an MLX-specific int4 checkpoint with a bundled
 quantization-recovery LoRA and prerouter, not a conventional trainable
 Transformers checkpoint. Training therefore runs QLoRA against the
@@ -55,6 +57,11 @@ The full provenance corpus is retained, while the quality profile limits the
 highly repetitive NVD source to 8,000 examples, retains every other source,
 and oversamples the small behavior-boundary set. This prevents one templated
 source from overwhelming instruction-following behavior.
+
+The v1.0.0 release trained for one epoch on 12,369 examples using one H100
+80GB. It reached training loss 1.3951 and validation loss 1.1511, and passed
+the repository's 4/4 release-gate scenarios. See the Hugging Face model card
+for complete limitations and evaluation details.
 
 On an H100 80GB, use the throughput-oriented profile after a one-step smoke
 test:
