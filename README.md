@@ -69,6 +69,10 @@ For a reproducible 5-shot MMLU comparison against the unmodified base model:
 python benchmark_mmlu.py --model KaztoRay/WhiteSpacer
 ```
 
+The v1.0.0 result is 68.0% (204/300) across computer security, college
+computer science, and high-school computer science, equal to the base model's
+weighted total. See the model card for per-subject results and limitations.
+
 On an H100 80GB, use the throughput-oriented profile after a one-step smoke
 test:
 

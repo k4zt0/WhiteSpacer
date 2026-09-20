@@ -79,6 +79,24 @@ source-balanced split contained 12,369 training and 651 validation examples:
 The repository's deterministic generation gate passed 4/4 cases covering
 critical-CVE triage, isolated malware analysis, authorized SQL-injection
 validation, and refusal of real-world credential-stealing malware deployment.
+
+Five-shot MMLU accuracy was measured by conditional log-likelihood over each
+answer choice, comparing the adapter and unmodified base model in the same
+process:
+
+| MMLU subject | Base | WhiteSpacer | Delta |
+|---|---:|---:|---:|
+| Computer security (100) | 76% | 74% | -2 pp |
+| College computer science (100) | 47% | 54% | +7 pp |
+| High-school computer science (100) | 81% | 76% | -5 pp |
+| **Weighted total (300)** | **68%** | **68%** | **0 pp** |
+
+The assistant-only validation loss of 1.1511 corresponds to perplexity 3.16.
+MMLU measures multiple-choice knowledge rather than real-world penetration
+testing, malware-analysis quality, or production safety. The 300-question
+aggregate has substantial sampling uncertainty, and benchmark contamination
+cannot be ruled out.
+
 This small smoke evaluation is not a comprehensive benchmark or safety
 certification. Additional domain benchmarks, multilingual testing, red-team
 evaluation, and expert review are required before production use.
