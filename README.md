@@ -63,6 +63,12 @@ The v1.0.0 release trained for one epoch on 12,369 examples using one H100
 the repository's 4/4 release-gate scenarios. See the Hugging Face model card
 for complete limitations and evaluation details.
 
+For a reproducible 5-shot MMLU comparison against the unmodified base model:
+
+```bash
+python benchmark_mmlu.py --model KaztoRay/WhiteSpacer
+```
+
 On an H100 80GB, use the throughput-oriented profile after a one-step smoke
 test:
 
